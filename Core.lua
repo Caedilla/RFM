@@ -283,9 +283,9 @@ end
 function RFM:PlaceChat()
 	-- Primary Chat Window, left
 	ChatFrame1:ClearAllPoints()
-	ChatFrame1:SetPoint('BOTTOMLEFT', 6, 8)
-	ChatFrame1:SetWidth(421)
-	ChatFrame1:SetHeight(191)
+	ChatFrame1:SetPoint('BOTTOMLEFT', 8, 14)
+	ChatFrame1:SetWidth(422)
+	ChatFrame1:SetHeight(190)
 end
 
 local function TSM_PopupHider()
@@ -363,7 +363,8 @@ function RFM:OnEnable()
 	RFM.Monitor = Monitor
 
 	C_Timer.After(5, TSM_PopupHider)
-	RFM:PlaceChat()
 
 	MyCvars()
+
+	RFM:PlaceChat()
 end
