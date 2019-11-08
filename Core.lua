@@ -142,58 +142,61 @@ local function MyCvars()
 
 	do -- Normal World Graphics
 		SetCVar('componentTextureLevel', 0) -- Character Model Texture level. 0 highest, 2 lowest.
-		SetCVar('doodadLodDist', 50) -- 150 Default.
-		SetCVar('EmitterCombatRange', 250) -- 900 Default. Weapon / Shoulder Glows
+		SetCVar('doodadLodDist', 300) -- 150 Default.
+		SetCVar('EmitterCombatRange', 1200) -- Weapon / Shoulder Glows
+		SetCVar('NonEmitterCombatRange', 6400)
 		SetCVar('entityShadowFadeScale', 100)
-		SetCVar('NonEmitterCombatRange', 1200) -- 900 Default.
+		SetCVar('entityLodDist', 10)  -- No idea, default 10.
+		SetCVar('entityLodOffset', 10) -- No idea, default 10.
 		SetCVar('groundEffectDensity', 256)
-		SetCVar('groundEffectDist', 128)
+		SetCVar('groundEffectDist', 500)
 		SetCVar('groundEffectFade', 128)
-		SetCVar('gxMaxFrameLatency', 4)
-		SetCVar('horizonStart', 3000) -- Maximum visible distance. 4000 Max farclip beyond that is always foggy.
-		SetCVar('farclip', 24000) -- Maximum view distance of terrain in fog
+		SetCVar('gxMaxFrameLatency', 2)
+		SetCVar('horizonStart', 4250) -- Maximum visible distance. 5000 Max farclip beyond that is always foggy.
+		SetCVar('farclip', 8000) -- Maximum view distance of terrain in fog
 		SetCVar('ffxAntiAliasingMode', 3) -- CMAA
 		if RFM.Client == 1 then SetCVar('lightMode', 2) end -- Lighting effects 0-2, 2 best.
-		SetCVar('lodObjectCullDist', 60) -- Distance to stop drawing lod objects
-		SetCVar('lodObjectCullSize', 30) -- size of objects to cull
-		SetCVar('lodObjectFadeScale', 50)
-		SetCVar('lodObjectMinSize', 250)
+		SetCVar('lodObjectCullDist', 100) -- Distance to stop drawing lod objects. Default 30.
+		SetCVar('lodObjectCullSize', 10) -- size of objects to cull. Default 15. Higher = Bigger objects get culled at distance.
+		SetCVar('lodObjectFadeScale', 100) -- Default 100.
+		SetCVar('lodObjectMinSize', 10) -- Default 20.
 		SetCVar('M2ForceAdditiveParticleSort', 1) -- Not sure, glowy shit?
-		SetCVar('M2UseThreads', 3)
+		SetCVar('M2UseThreads', 1)
 		SetCVar('maxFPS', 144)
-		SetCVar('maxFPSBk', 15)
-		SetCVar('maxFPSLoading', 10)
-		SetCVar('MSAAAlphaTest', 0)
+		SetCVar('maxFPSBk', 30)
+		SetCVar('maxFPSLoading', 15)
+		SetCVar('MSAAAlphaTest', 1)
 		SetCVar('MSAAQuality', 2, 0) -- 2, 0
-		SetCVar('mtParticles', 2) -- Particle threads? Default 1
 		SetCVar('occlusionMaxJobs', 6) -- Occlusion threads? Default 3
 		SetCVar('particleDensity', 100) -- Particle Density
 		SetCVar('particleMTDensity', 100) -- Particle Density for Multi-threaded particles. 100 Max.
 		SetCVar('projectedTextures', 1)
-		SetCVar('reflectionDownscale', 0)
-		SetCVar('reflectionMode', 3)
+		SetCVar('reflectionDownscale', 1) -- Downscale slightly, at 0 the reflections look too crisp.
+		SetCVar('reflectionMode', 3) -- Reflect everything possible. Default 3
 		SetCVar('rippleDetail', 2)
 		SetCVar('shadowMode', 3)
 		SetCVar('shadowSoft', 1) -- Soft Blurred Edge shadows.
-		SetCVar('shadowTextureSize', 1024)
+		SetCVar('shadowTextureSize', 1024) -- With Soft shadows there is no need for higher resolution shadows.
 		if RFM.Client == 1 then SetCVar('spellEffectLevel', 50) end
-		SetCVar('SSAO', 0)
-		SetCVar('assaoDetailShadowStrength', 5)
+		SetCVar('SSAO', 4)
+		SetCVar('assaoBlurPassCount', 0)
+		SetCVar('assaoDetailShadowStrength', 5) -- SSAO strength on small details like hair.
 		SetCVar('assaoFadeOutFrom', 0)
-		SetCVar('assaoFadeOutTo', 200)
+		SetCVar('assaoFadeOutTo', 400)
 		SetCVar('assaoHorizonAngleThresh', 0.5)
-		SetCVar('assaoNormals', 0)
-		SetCVar('assaoRadius', 1.25)
-		SetCVar('assaoSharpness', 0.75)
-		SetCVar('assaoShadowClamp', 1)
-		SetCVar('assaoShadowMult', 3)
-		SetCVar('assaoShadowPower', 1.5)
-		SetCVar('terrainHoles', 1)
-		SetCVar('terrainLodDist', 1000)
+		SetCVar('assaoNormals', 1)
+		SetCVar('assaoRadius', 0.75)
+		SetCVar('assaoSharpness', 1)
+		SetCVar('assaoShadowClamp', 0.5)
+		SetCVar('assaoShadowMult', 1.5)
+		SetCVar('assaoShadowPower', 1.25)
+		SetCVar('terrainLodDist', 1000) -- Seems to be related to how far away the game streams in data or something like that too? Higher numbers tank FPS.
 		SetCVar('useHighResolutionUITextures', 1)
-		SetCVar('waterDetail', 3)
+		SetCVar('waterDetail', 2) -- Actually looks better than 3 since the reflection warps a little over the water.
 		SetCVar('wmoDoodadDist', 1000)
-		SetCVar('wmoLodDist', 400)
+		SetCVar('wmoLodDist', 300)
+		SetCVar('volumeFog', 1)
+		SetCVar('volumeFogLevel', 4)
 	end
 	do -- Raid Specific Graphics
 		SetCVar('RAIDcomponentTextureLevel', 0)
@@ -201,21 +204,21 @@ local function MyCvars()
 		SetCVar('RAIDgroundEffectDensity', 64)
 		SetCVar('RAIDgroundEffectDist', 32)
 		SetCVar('RAIDhorizonStart', 1000)
-		SetCVar('RAIDfarclip', 5000)
-		SetCVar('RAIDlodObjectCullDist', 30)
-		SetCVar('RAIDlodObjectCullSize', 30)
+		SetCVar('RAIDfarclip', 4000)
+		SetCVar('RAIDlodObjectCullDist', 50)
+		SetCVar('RAIDlodObjectCullSize', 15)
 		SetCVar('RAIDlodObjectFadeScale', 50)
-		SetCVar('RAIDlodObjectMinSize', 125)
+		SetCVar('RAIDlodObjectMinSize', 20)
 		SetCVar('RAIDparticleDensity', 25)
 		SetCVar('RAIDparticleMTDensity', 50)
 		SetCVar('RAIDreflectionMode', 2)
 		SetCVar('RAIDrippleDetail', 0)
 		SetCVar('RAIDshadowSoft', 1)
-		SetCVar('RAIDshadowMode', 1)
-		SetCVar('RAIDshadowTextureSize', 1024)
+		SetCVar('RAIDshadowMode', 2)
+		SetCVar('RAIDshadowTextureSize', 512)
 		if RFM.Client == 1 then SetCVar('RAIDspellEffectLevel', 15) end
 		SetCVar('RAIDSSAO', 0)
-		SetCVar('RAIDterrainLodDist', 100)
+		SetCVar('RAIDterrainLodDist', 400)
 		SetCVar('RAIDwaterDetail', 1)
 		SetCVar('RAIDwmoLodDist', 400)
 	end
@@ -229,6 +232,13 @@ local function MyCvars()
 		SetCVar('cameraSmooth', 0)
 		SetCVar('cameraYawMoveSpeed', 120) -- Slow horizontal camera rotation. Default 180.
 		SetCVar('cameraZoomSpeed', 25)
+	end
+
+	do -- Mouse Stuff
+		SetCVar('rawMouseAccelerationEnable', 0)
+		SetCVar('rawMouseEnable', 1)
+		SetCVar('rawMouseRate', 500) -- Default 125. Polling Rate?
+		SetCVar('rawMouseResolution', 1600) -- Default 400.
 	end
 
 	do -- Disable Synchronising Settings
@@ -257,6 +267,7 @@ local function MyCvars()
 		SetCVar('flightAngleLookAhead', 1) -- Spin and angle character when flying.
 		SetCVar('interactOnLeftClick', 0)
 		SetCVar('questLogOpen', 0) -- Questlog toggled off on map by default
+		SetCVar('screenshotQuality', 10)
 		SetCVar('showSpenderFeedback', 0)
 		SetCVar('showTamers', 0)
 		SetCVar('showToastOffline', 0)
@@ -353,4 +364,6 @@ function RFM:OnEnable()
 
 	C_Timer.After(5, TSM_PopupHider)
 	RFM:PlaceChat()
+
+	MyCvars()
 end
