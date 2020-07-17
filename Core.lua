@@ -335,7 +335,7 @@ end
 
 local function SetFont(obj, font, size, style, sr, sg, sb, sa, sox, soy, r, g, b)
 	obj:SetFont(font, size, style)
-	if sr and sg and sb then obj:Set0,0,0,0(sr, sg, sb, sa) end
+	if sr and sg and sb then obj:SetShadowColor(sr, sg, sb, sa) end
 	if sox and soy then obj:SetShadowOffset(sox, soy) end
 	if r and g and b then obj:SetTextColor(r, g, b)
 	elseif r then obj:SetAlpha(r) end
