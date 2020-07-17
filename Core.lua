@@ -316,7 +316,7 @@ local function ChatTabStyler(frame, i)
 	local Chat = CreateFrame('Frame', name .. i, BlizzardFrame)
 	local Background = Chat:CreateTexture(name .. i .. 'Background', 'BACKGROUND')
 
-	BlizzardFrame:Set0,0,0,0(0, 0, 0, 0)
+	BlizzardFrame:SetShadowColor(0, 0, 0, 0)
 
 	Chat:SetBackdrop(cfg.Border)
 	Chat:SetBackdropBorderColor(0, 0, 0, 1)
