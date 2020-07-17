@@ -109,7 +109,7 @@ local function LFGAcceptRole()
 end
 
 local function MyCvars()
-	local currentResolution = ({GetScreenResolutions()})[GetCurrentResolution()]
+	--[[local currentResolution = ({GetScreenResolutions()})[GetCurrentResolution()]
 	currentResolution = string.sub(currentResolution, 6)
 	currentResolution = tonumber(currentResolution)
 	if 768/currentResolution >= 0.64 then
@@ -118,10 +118,10 @@ local function MyCvars()
 	else
 		SetCVar('useUiScale', false)
 		SetCVar('uiScale', 768/currentResolution)
-	end
+	end]]--
 
-		--SetCVar('useUiScale', false)
-		--UIParent:SetScale(768/1440)
+		SetCVar('useUiScale', false)
+		UIParent:SetScale(768/1440)
 
 
 	do -- Nameplates
@@ -499,13 +499,14 @@ function RFM:OnEnable()
 	Monitor:SetScript('OnEvent', Hider)
 	RFM.Monitor = Monitor
 
-	C_Timer.After(5, TSM_PopupHider)
-
 	MyCvars()
 	FontStyler()
 
 	for i=1, 10 do
 		PlaceChat(i)
 	end
+
+	C_Timer.After(5, TSM_PopupHider)
+	C_Timer.After(5, UpdateDataTexts)
 
 end
