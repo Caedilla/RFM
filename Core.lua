@@ -316,7 +316,7 @@ local function ChatTabStyler(frame, i)
 	local Chat = CreateFrame('Frame', name .. i, BlizzardFrame)
 	local Background = Chat:CreateTexture(name .. i .. 'Background', 'BACKGROUND')
 
-	BlizzardFrame:SetShadowColor(0, 0, 0, 0)
+	BlizzardFrame:Set0,0,0,0(0, 0, 0, 0)
 
 	Chat:SetBackdrop(cfg.Border)
 	Chat:SetBackdropBorderColor(0, 0, 0, 1)
@@ -335,7 +335,7 @@ end
 
 local function SetFont(obj, font, size, style, sr, sg, sb, sa, sox, soy, r, g, b)
 	obj:SetFont(font, size, style)
-	if sr and sg and sb then obj:SetShadowColor(sr, sg, sb, sa) end
+	if sr and sg and sb then obj:Set0,0,0,0(sr, sg, sb, sa) end
 	if sox and soy then obj:SetShadowOffset(sox, soy) end
 	if r and g and b then obj:SetTextColor(r, g, b)
 	elseif r then obj:SetAlpha(r) end
@@ -349,7 +349,6 @@ local function FontStyler()
 	local NAMEFONT		= LSM:Fetch('font', 'PT Sans Narrow Bold')
 	local BUBBLE		= LSM:Fetch('font', 'PT Sans Narrow Bold')
 	local NORMALSIZE	= 14
-	local SHADOWCOLOR	= 0,0,0,0
 	local NORMALOFFSET	= 1
 	local BIGOFFSET		= 1
 	local OUTLINE		= 'Outline'
@@ -367,7 +366,7 @@ local function FontStyler()
 		SetFont(_G.BossEmoteNormalHuge,					NORMAL, 24)									-- Talent Title
 		SetFont(_G.ChatBubbleFont,						BUBBLE, NORMALSIZE, OUTLINE)
 		SetFont(_G.CoreAbilityFont,						NORMAL, 26)									-- Core abilities(title)
-		SetFont(_G.DestinyFontHuge,						NORMAL, 32, nil, SHADOWCOLOR, BIGOFFSET)	-- Garrison Mission Report
+		SetFont(_G.DestinyFontHuge,						NORMAL, 32, nil, 0,0,0,0, BIGOFFSET)	-- Garrison Mission Report
 		SetFont(_G.DestinyFontMed,						NORMAL, 14)									-- Added in 7.3.5 used for ?
 		SetFont(_G.Fancy12Font,							NORMAL, 12)									-- Added in 7.3.5 used for ?
 		SetFont(_G.Fancy14Font,							NORMAL, 14)									-- Added in 7.3.5 used for ?
@@ -387,11 +386,11 @@ local function FontStyler()
 		SetFont(_G.Game42Font,							NORMAL, 42, OUTLINE)									-- PVP Stuff
 		SetFont(_G.Game46Font,							NORMAL, 46, OUTLINE)									-- Added in 7.3.5 used for ?
 		SetFont(_G.Game48Font,							NORMAL, 48, OUTLINE)
-		SetFont(_G.Game48FontShadow,					NORMAL, 48, nil, SHADOWCOLOR, BIGOFFSET)
+		SetFont(_G.Game48FontShadow,					NORMAL, 48, nil, 0,0,0,0, BIGOFFSET)
 		SetFont(_G.Game60Font,							NORMAL, 60)
 		SetFont(_G.Game72Font,							NORMAL, 72)
 		SetFont(_G.Game120Font,							NORMAL, 120)
-		SetFont(_G.GameFont_Gigantic,					NORMAL, 32, nil, SHADOWCOLOR, BIGOFFSET)	-- Used at the install steps
+		SetFont(_G.GameFont_Gigantic,					NORMAL, 32, nil, 0,0,0,0, BIGOFFSET)	-- Used at the install steps
 		SetFont(_G.GameFontHighlightMedium,				NORMAL, 15, OUTLINE)									-- Fix QuestLog Title mouseover
 		SetFont(_G.GameFontHighlightSmall2,				NORMAL, NORMALSIZE)							-- Skill or Recipe description on TradeSkill frame
 		SetFont(_G.GameFontNormalHuge2,					NORMAL, 24, OUTLINE)									-- Mythic weekly best dungeon name
@@ -417,12 +416,12 @@ local function FontStyler()
 		SetFont(_G.PVPArenaTextString,					NORMAL, 22, 'OUTLINE')
 		SetFont(_G.PVPInfoTextString,					NORMAL, 22, 'OUTLINE')
 		SetFont(_G.QuestFont,							NORMAL, NORMALSIZE)
-		SetFont(_G.QuestFont_Enormous, 					NORMAL, 24, nil, SHADOWCOLOR, NORMALOFFSET) -- Garrison Titles
-		SetFont(_G.QuestFont_Huge,						NORMAL, 15, nil, SHADOWCOLOR, BIGOFFSET)	-- Quest rewards title(Rewards)
+		SetFont(_G.QuestFont_Enormous, 					NORMAL, 24, nil, 0,0,0,0, NORMALOFFSET) -- Garrison Titles
+		SetFont(_G.QuestFont_Huge,						NORMAL, 15, nil, 0,0,0,0, BIGOFFSET)	-- Quest rewards title(Rewards)
 		SetFont(_G.QuestFont_Large,						NORMAL, 14)
-		SetFont(_G.QuestFont_Shadow_Huge,				NORMAL, 15, nil, SHADOWCOLOR, NORMALOFFSET) -- Quest Title
-		SetFont(_G.QuestFont_Shadow_Small,				NORMAL, 14, nil, SHADOWCOLOR, NORMALOFFSET)
-		SetFont(_G.QuestFont_Super_Huge,				NORMAL, 22, nil, SHADOWCOLOR, BIGOFFSET)
+		SetFont(_G.QuestFont_Shadow_Huge,				NORMAL, 15, nil, 0,0,0,0, NORMALOFFSET) -- Quest Title
+		SetFont(_G.QuestFont_Shadow_Small,				NORMAL, 14, nil, 0,0,0,0, NORMALOFFSET)
+		SetFont(_G.QuestFont_Super_Huge,				NORMAL, 22, nil, 0,0,0,0, BIGOFFSET)
 		SetFont(_G.ReputationDetailFont,				NORMAL, NORMALSIZE)							-- Rep Desc when clicking a rep
 		SetFont(_G.SubZoneTextFont,						NORMAL, 24, 'OUTLINE')			-- World Map(SubZone)
 		SetFont(_G.SubZoneTextString,					NORMAL, 25, 'OUTLINE')
@@ -436,7 +435,7 @@ local function FontStyler()
 		SetFont(_G.SystemFont_OutlineThick_Huge2,		NORMAL, 20, 'THICKOUTLINE')
 		SetFont(_G.SystemFont_OutlineThick_WTF,			NORMAL, 32, 'OUTLINE')			-- World Map
 		SetFont(_G.SystemFont_Shadow_Huge1,				NORMAL, 20, 'OUTLINE')			-- Raid Warning, Boss emote frame too
-		SetFont(_G.SystemFont_Shadow_Huge3,				NORMAL, 22, nil, SHADOWCOLOR, BIGOFFSET)	-- FlightMap
+		SetFont(_G.SystemFont_Shadow_Huge3,				NORMAL, 22, nil, 0,0,0,0, BIGOFFSET)	-- FlightMap
 		SetFont(_G.SystemFont_Shadow_Large,				NORMAL, 15)
 		SetFont(_G.SystemFont_Shadow_Large_Outline,		NUMBER, 20, 'OUTLINE')
 		SetFont(_G.SystemFont_Shadow_Med1,				NORMAL, NORMALSIZE)
