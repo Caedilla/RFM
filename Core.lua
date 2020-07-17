@@ -19,11 +19,20 @@ local function ShouldShow()
 	return true
 end
 
+local function UpdateDataTexts()
+	if _G['SavedInstances_DataText1'] then
+		if _G['SavedInstances_DataText1'].text then
+			_G['SavedInstances_DataText1'].text:SetText('Lockouts')
+		end
+	end
+end
+
 local function Hider()
-	if InCombatLockdown() then -- Hide Minimap and SLDT Frames attatched to it while in Combat.
+	if InCombatLockdown() then
 		--if MinimapCluster:IsShown() then MinimapCluster:Hide() end
 	else
 		--if not MinimapCluster:IsShown() then MinimapCluster:Show() end
+
 		-- Always hide Blizzard's Raid Frames.
 		if CompactRaidFrameManager then
 			CompactRaidFrameManager:UnregisterAllEvents()
@@ -62,8 +71,9 @@ local function Hider()
 
 		-- Hide Combat log header background
 		CombatLogQuickButtonFrame_CustomTexture:Hide()
-	end
 
+		UpdateDataTexts()
+	end
 
 	if SorhaQuestLog then
 		RFM.Monitor:UnregisterEvent('ADDON_LOADED')
@@ -82,11 +92,9 @@ local function Hider()
 				SorhaQuestLog:SetModuleEnabled('QuestTracker', false)
 			end
 		end
-	-- Toggle SQL
-	--SorhaQuestLog:SetModuleEnabled('QuestTracker', not SorhaQuestLog:GetModuleEnabled('QuestTracker'))
+
 	end
 end
-
 
 local function LFRAcceptRole()
 	LFGListApplicationDialog.SignUpButton:Click()
@@ -289,7 +297,6 @@ local function PlaceChat(i)
 		--x,y =
 	end
 
-
 	chat:ClearAllPoints()
 	chat:SetPoint('BOTTOMRIGHT', -30, 14)
 	chat:SetWidth(424)
@@ -325,7 +332,6 @@ local function ChatTabStyler(frame, i)
 	BlizzardTabText:SetFont(font, 20, 'OUTLINE')
 	BlizzardTabText:SetText(BlizzardTabText:GetText():upper())
 end
-
 
 local function SetFont(obj, font, size, style, sr, sg, sb, sa, sox, soy, r, g, b)
 	obj:SetFont(font, size, style)
@@ -469,25 +475,13 @@ function RFM:OnEnable()
 	end
 
 	if RFM.Client == 1 then
-
 	else
-
 	end
-
-	-- Hide BFA Voice Chat buttons
-	--ChatFrameChannelButton:ClearAllPoints()
-	--ChatFrameChannelButton:SetPoint('TOPRIGHT', 50000, 50000)
-	--ChatFrameChannelButton:Hide()
-	--ChatFrameToggleVoiceMuteButton:ClearAllPoints()
-	--ChatFrameToggleVoiceMuteButton:Hide()
-	--ChatFrameToggleVoiceDeafenButton:ClearAllPoints()
-	--ChatFrameToggleVoiceDeafenButton:Hide()
 
 	-- Move PVP Objective Score Down a bit.
 	UIWidgetTopCenterContainerFrame:SetPoint('TOP', 0, -30)
 	UIWidgetBelowMinimapContainerFrame:ClearAllPoints()
 	UIWidgetBelowMinimapContainerFrame:SetPoint('TOP', 0, -60)
-
 
 	-- Create Backdrops
 	for i=1, 10 do
@@ -510,10 +504,8 @@ function RFM:OnEnable()
 	MyCvars()
 	FontStyler()
 
-
 	for i=1, 10 do
 		PlaceChat(i)
 	end
-
 
 end
