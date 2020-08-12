@@ -313,7 +313,7 @@ local function ChatTabStyler(frame, i)
 	local BlizzardTab = _G[frame:GetName() .. 'Tab']
 	local BlizzardTabText = _G[frame:GetName() .. 'TabText']
 	local name = 'RFM_Chat'
-	local Chat = CreateFrame('Frame', name .. i, BlizzardFrame)
+	local Chat = CreateFrame('Frame', name .. i, BlizzardFrame, BackdropTemplateMixin and "BackdropTemplate")
 	local Background = Chat:CreateTexture(name .. i .. 'Background', 'BACKGROUND')
 
 	BlizzardFrame:SetShadowColor(0, 0, 0, 0)
