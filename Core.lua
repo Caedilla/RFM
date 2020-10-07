@@ -188,7 +188,7 @@ local function MyCvars()
 		SetCVar('lodObjectMinSize', 10) -- Default 20.
 		SetCVar('M2ForceAdditiveParticleSort', 1) -- Not sure, glowy shit?
 		SetCVar('M2UseThreads', 1)
-		SetCVar('maxFPS', 145)
+		SetCVar('maxFPS', 144)
 		SetCVar('maxFPSBk', 30)
 		SetCVar('maxFPSLoading', 15)
 		SetCVar('targetFPS', 0)
@@ -267,6 +267,7 @@ local function MyCvars()
 		SetCVar('cameraZoomSpeed', 25)
 		SetCVar('ShakeStrengthCamera', 0)
 		SetCVar('ShakeStrengthUI', 0)
+		SetCVar('cameraSmoothStyle', 0)
 		SetCVar('cameraSmoothTrackingStyle', 0)
 		SetCVar('CameraReduceUnexpectedMovement', 1)
 	end
@@ -327,6 +328,7 @@ local function MyCvars()
 		SetCVar('fstack_showhidden', 1)
 		SetCVar('blockChannelInvites', 1)
 		SetCVar('AutoPushSpellToActionBar', 0)
+		SetCVar('displaySpellActivationOverlays', 0)
 	end
 
 	do -- Combat Text
