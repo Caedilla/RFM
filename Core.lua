@@ -27,6 +27,10 @@ local function UpdateDataTexts()
 	end
 end
 
+local function TSM_PopupHider()
+	StaticPopup_Hide('TSM_APP_DATA_ERROR')
+end
+
 local function Hider()
 	if InCombatLockdown() then
 		--if MinimapCluster:IsShown() then MinimapCluster:Hide() end
@@ -149,6 +153,19 @@ local function MyCvars()
 		SetCVar('nameplateTargetRadialPosition', 1) -- Target Nameplate stays on screen when the unit is offscreen.
 	end
 
+	do -- Sound
+		SetCVar('Sound_MasterVolume', 0.1)
+		SetCVar('Sound_DialogVolume', 1.0)
+		SetCVar('Sound_MusicVolume', 0.1)
+		SetCVar('Sound_AmbienceVolume', 0.5)
+		SetCVar('Sound_SFXVolume', 0.2)
+		SetCVar('Sound_ZoneMusicNoDelay', 1)
+		SetCVar('Sound_EnableSoundWhenGameIsInBG', 1)
+		SetCVar('Sound_EnableErrorSpeech', 0)
+		SetCVar('nameplateOverlapH', 0.6)
+		SetCVar('nameplateOverlapH', 0.6)
+	end
+
 	do -- Normal World Graphics
 		SetCVar('componentTextureLevel', 0) -- Character Model Texture level. 0 highest, 2 lowest.
 		SetCVar('doodadLodDist', 300) -- 150 Default.
@@ -199,13 +216,16 @@ local function MyCvars()
 		SetCVar('assaoShadowClamp', 0.5)
 		SetCVar('assaoShadowMult', 1.5)
 		SetCVar('assaoShadowPower', 1.25)
-		SetCVar('terrainLodDist', 1500) -- Seems to be related to how far away the game streams in data or something like that too? Higher numbers tank FPS.
 		SetCVar('useHighResolutionUITextures', 1)
 		SetCVar('waterDetail', 2) -- Actually looks better than 3 since the reflection warps a little over the water.
 		SetCVar('wmoDoodadDist', 500)
 		SetCVar('wmoLodDist', 500)
 		SetCVar('volumeFog', 1)
 		SetCVar('volumeFogLevel', 4)
+		SetCVar('spellClutter', 100) -- -1 Default
+		SetCVar('TerrainLodDiv', 64) -- 768 Default
+		SetCVar('TerrainLodDist', 512) -- 400 Default
+		SetCVar('maxLightCount', 32)
 	end
 	do -- Raid Specific Graphics
 		SetCVar('RAIDcomponentTextureLevel', 0)
@@ -227,9 +247,10 @@ local function MyCvars()
 		SetCVar('RAIDshadowTextureSize', 512)
 		if RFM.Client == 1 then SetCVar('RAIDspellEffectLevel', 15) end
 		SetCVar('RAIDSSAO', 0)
-		SetCVar('RAIDterrainLodDist', 400)
 		SetCVar('RAIDwaterDetail', 1)
 		SetCVar('RAIDwmoLodDist', 400)
+		SetCVar('RAIDTerrainLodDiv', 64) -- 768 Default
+		SetCVar('RAIDTerrainLodDist', 128) -- 400 Default
 	end
 
 	do -- Camera stuff
@@ -241,6 +262,10 @@ local function MyCvars()
 		SetCVar('cameraSmooth', 0)
 		SetCVar('cameraYawMoveSpeed', 120) -- Slow horizontal camera rotation. Default 180.
 		SetCVar('cameraZoomSpeed', 25)
+		SetCVar('ShakeStrengthCamera', 0)
+		SetCVar('ShakeStrengthUI', 0)
+		SetCVar('cameraSmoothTrackingStyle', 0)
+		SetCVar('CameraReduceUnexpectedMovement', 1)
 	end
 
 	do -- Mouse Stuff
@@ -282,29 +307,33 @@ local function MyCvars()
 		SetCVar('showToastOffline', 0)
 		SetCVar('showToastOnline', 1)
 		SetCVar('skipStartGear', 1)
-		SetCVar('spellQueueWindow', 60)
+		SetCVar('spellQueueWindow', 100)
 		SetCVar('TargetPriorityCombatLock', 1)
 		SetCVar('UberTooltips', 1)
+		SetCVar('minimapAltitudeHintMode', 2) --Change minimap altitude difference display. 0=none, 1=darken, 2=arrows
+		SetCVar('calendarShowResets', 1)
+		SetCVar('streamStatusMessage', 1)
+		SetCVar('secureAbilityToggle', 1)
+	end
+
+	do -- Combat Text
+		SetCVar('floatingCombatTextCombatHealing', 1)
+		SetCVar('floatingCombatTextCombatDamage', 1)
+		SetCVar('floatingCombatTextPetMeleeDamage', 1)
+		SetCVar('floatingCombatTextPetSpellDamage', 1)
+		SetCVar('floatingCombatTextCombatLogPeriodicSpells', 1)
 	end
 
 end
 
-local function PlaceChat(i)
-	-- Primary Chat Window, left
-	local chat = _G['ChatFrame' .. i]
-	local x,y = -30,14
-	if i == 2 then return
-		--x,y =
+local function PlaceChat()
+	for i=1, 10 do
+		local chat = _G['ChatFrame' .. i]
+		chat:ClearAllPoints()
+		chat:SetPoint('BOTTOMRIGHT', -30, 14)
+		chat:SetWidth(424)
+		chat:SetHeight(190)
 	end
-
-	chat:ClearAllPoints()
-	chat:SetPoint('BOTTOMRIGHT', -30, 14)
-	chat:SetWidth(424)
-	chat:SetHeight(190)
-end
-
-local function TSM_PopupHider()
-	StaticPopup_Hide('TSM_APP_DATA_ERROR')
 end
 
 local function ChatTabStyler(frame, i)
@@ -334,13 +363,13 @@ local function ChatTabStyler(frame, i)
 end
 
 local function SetFont(obj, font, size, style, sr, sg, sb, sa, sox, soy, r, g, b)
+	if not obj then return end
 	obj:SetFont(font, size, style)
 	if sr and sg and sb then obj:SetShadowColor(sr, sg, sb, sa) end
 	if sox and soy then obj:SetShadowOffset(sox, soy) end
 	if r and g and b then obj:SetTextColor(r, g, b)
 	elseif r then obj:SetAlpha(r) end
 end
-
 
 local function FontStyler()
 	local NORMAL		= LSM:Fetch('font', 'PT Sans Narrow Bold')
@@ -482,10 +511,20 @@ function RFM:OnEnable()
 	UIWidgetBelowMinimapContainerFrame:ClearAllPoints()
 	UIWidgetBelowMinimapContainerFrame:SetPoint('TOP', 0, -60)
 
+	-- Resize World Map to a better size
+	if WorldMapFrame:GetEffectiveScale() ~= 0.75 then
+		WorldMapFrame:SetScale(0.75 / WorldMapFrame:GetEffectiveScale())
+	end
+
 	-- Create Backdrops
 	for i=1, 10 do
 		ChatTabStyler(_G['ChatFrame' .. i], i)
 	end
+
+	-- Automatic Queue Accept
+	LFGListApplicationDialog:SetScript("OnShow", LFRAcceptRole)
+	LFDRoleCheckPopup:SetScript("OnShow", LFDAcceptRole)
+	LFGInvitePopup:SetScript("OnShow", LFGAcceptRole)
 
 	-- Run the check on all of these events.
 	local Monitor = CreateFrame('Frame', 'RFM_Monitor')
@@ -499,13 +538,8 @@ function RFM:OnEnable()
 	RFM.Monitor = Monitor
 
 	MyCvars()
-	FontStyler()
-
-	for i=1, 10 do
-		PlaceChat(i)
-	end
-
+	C_Timer.After(1, FontStyler)
 	C_Timer.After(5, TSM_PopupHider)
 	C_Timer.After(5, UpdateDataTexts)
-
+	C_Timer.After(1, PlaceChat)
 end
