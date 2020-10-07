@@ -329,6 +329,7 @@ local function MyCvars()
 		SetCVar('blockChannelInvites', 1)
 		SetCVar('AutoPushSpellToActionBar', 0)
 		SetCVar('displaySpellActivationOverlays', 0)
+		SetCVar('spellActivationOverlayOpacity', 0)
 	end
 
 	do -- Combat Text
