@@ -191,6 +191,7 @@ local function MyCvars()
 		SetCVar('maxFPS', 145)
 		SetCVar('maxFPSBk', 30)
 		SetCVar('maxFPSLoading', 15)
+		SetCVar('targetFPS', 0)
 		SetCVar('MSAAAlphaTest', 0) -- Causes weird flickering in 8.3!
 		SetCVar('MSAAQuality', 2, 0) -- 2, 0
 		SetCVar('occlusionMaxJobs', 6) -- Occlusion threads? Default 3
@@ -221,13 +222,15 @@ local function MyCvars()
 		SetCVar('wmoDoodadDist', 500)
 		SetCVar('wmoLodDist', 500)
 		SetCVar('volumeFog', 1)
-		SetCVar('volumeFogLevel', 4)
+		SetCVar('volumeFogLevel', 3)
 		SetCVar('spellClutter', 100) -- -1 Default
 		SetCVar('TerrainLodDiv', 64) -- 768 Default
 		SetCVar('TerrainLodDist', 512) -- 400 Default
 		SetCVar('maxLightCount', 32)
+		SetCVar('shadowRt', 3)
 	end
 	do -- Raid Specific Graphics
+		SetCVar('RAIDsettingsEnabled', 1)
 		SetCVar('RAIDcomponentTextureLevel', 0)
 		SetCVar('RAIDentityShadowFadeScale', 10)
 		SetCVar('RAIDgroundEffectDensity', 64)
@@ -301,7 +304,9 @@ local function MyCvars()
 		SetCVar('flightAngleLookAhead', 1) -- Spin and angle character when flying.
 		SetCVar('interactOnLeftClick', 0)
 		SetCVar('questLogOpen', 0) -- Questlog toggled off on map by default
+		SetCVar('screenshotSizeOverride', '7680x4320')
 		SetCVar('screenshotQuality', 10)
+		SetCVar('screenshotFormat', 'png')
 		SetCVar('showSpenderFeedback', 0)
 		SetCVar('showTamers', 0)
 		SetCVar('showToastOffline', 0)
@@ -314,6 +319,14 @@ local function MyCvars()
 		SetCVar('calendarShowResets', 1)
 		SetCVar('streamStatusMessage', 1)
 		SetCVar('secureAbilityToggle', 1)
+		SetCVar('advancedCombatLogging', 1)
+		SetCVar('autoStand', 0)
+		SetCVar('disableAELooting', 0)
+		SetCVar('removeChatDelay', 1)
+		SetCVar('whisperMode', 'inline')
+		SetCVar('fstack_showhidden', 1)
+		SetCVar('blockChannelInvites', 1)
+		SetCVar('AutoPushSpellToActionBar', 0)
 	end
 
 	do -- Combat Text
@@ -322,6 +335,16 @@ local function MyCvars()
 		SetCVar('floatingCombatTextPetMeleeDamage', 1)
 		SetCVar('floatingCombatTextPetSpellDamage', 1)
 		SetCVar('floatingCombatTextCombatLogPeriodicSpells', 1)
+		SetCVar('WorldTextScale', 1.5)
+		SetCVar('WorldTextGravity', 1)
+		SetCVar('WorldTextRandomXY', 0.5)
+		SetCVar('WorldTextRandomXY', 0.5)
+		SetCVar('WorldTextRandomXY', 0.5)
+		SetCVar('WorldTextRampPow', 20)
+		SetCVar('WorldTextRampPowCrit', 10)
+		SetCVar('WorldTextRampDuration', 2.5)
+		SetCVar('WorldTextStartPosRandomness', 10)
+		SetCVar('WorldTextCritScreenY', -0.0275)
 	end
 
 end
@@ -541,5 +564,5 @@ function RFM:OnEnable()
 	C_Timer.After(1, FontStyler)
 	C_Timer.After(5, TSM_PopupHider)
 	C_Timer.After(5, UpdateDataTexts)
-	C_Timer.After(1, PlaceChat)
+	C_Timer.After(3, PlaceChat)
 end
