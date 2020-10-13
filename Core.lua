@@ -529,6 +529,7 @@ function RFM:OnEnable()
 	end
 
 	if RFM.Client == 1 then
+		SetCurrentTitle(0) -- Something keeps setting my title to the highest value, I don't want a title.
 	else
 	end
 
