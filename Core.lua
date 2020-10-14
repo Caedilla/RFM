@@ -270,6 +270,7 @@ local function MyCvars()
 		SetCVar('cameraSmoothStyle', 0)
 		SetCVar('cameraSmoothTrackingStyle', 0)
 		SetCVar('CameraReduceUnexpectedMovement', 1)
+		SetCVar('CameraKeepCharacterCentered', 0)
 	end
 
 	do -- Mouse Stuff
@@ -529,7 +530,6 @@ function RFM:OnEnable()
 	end
 
 	if RFM.Client == 1 then
-		SetCurrentTitle(0) -- Something keeps setting my title to the highest value, I don't want a title.
 	else
 	end
 
