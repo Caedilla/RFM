@@ -26,6 +26,9 @@ ignore = {
 	"241", -- mutated but never accessed.
 }
 globals = {
+	"LFGInvitePopup",
+	"LFDRoleCheckPopup",
+	"BackdropTemplateMixin",
 	"_G",
 	"bit",
 	"RFM",
