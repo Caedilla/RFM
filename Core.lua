@@ -354,13 +354,11 @@ local function MyCvars()
 end
 
 local function PlaceChat()
-	for i=1, 10 do
-		local chat = _G['ChatFrame' .. i]
-		chat:ClearAllPoints()
-		chat:SetPoint('BOTTOMRIGHT', -30, 14)
-		chat:SetWidth(424)
-		chat:SetHeight(190)
-	end
+	local chat = _G['ChatFrame1']
+	chat:ClearAllPoints()
+	chat:SetPoint('BOTTOMRIGHT', -30, 14)
+	chat:SetWidth(424)
+	chat:SetHeight(190)
 end
 
 local function ChatTabStyler(frame, i)
