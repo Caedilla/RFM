@@ -270,7 +270,6 @@ local function MyCvars()
 		SetCVar('cameraSmoothStyle', 0)
 		SetCVar('cameraSmoothTrackingStyle', 0)
 		SetCVar('CameraReduceUnexpectedMovement', 1)
-		SetCVar('CameraKeepCharacterCentered', 0)
 	end
 
 	do -- Mouse Stuff
@@ -326,11 +325,12 @@ local function MyCvars()
 		SetCVar('disableAELooting', 0)
 		SetCVar('removeChatDelay', 1)
 		SetCVar('whisperMode', 'inline')
-		SetCVar('fstack_showhidden', 1)
+		SetCVar('fstack_showhidden', 0)
 		SetCVar('blockChannelInvites', 1)
 		SetCVar('AutoPushSpellToActionBar', 0)
 		SetCVar('displaySpellActivationOverlays', 0)
 		SetCVar('spellActivationOverlayOpacity', 0)
+		SetCVar('showTutorials',0)
 	end
 
 	do -- Combat Text
@@ -539,6 +539,14 @@ function RFM:OnEnable()
 	-- Resize World Map to a better size
 	if WorldMapFrame:GetEffectiveScale() ~= 0.75 then
 		WorldMapFrame:SetScale(0.75 / WorldMapFrame:GetEffectiveScale())
+		--WorldMapFrame.BorderFrame:SetScale(1)
+		WorldMapFrameBg:Hide()
+		WorldMapFrame.BorderFrame:Hide()
+		WorldMapFrame.ScrollContainer.GetCursorPosition = function(f)
+			local x,y = MapCanvasScrollControllerMixin.GetCursorPosition(f)
+			local s = WorldMapFrame:GetScale()
+			return x/s, y/s
+		end
 	end
 
 	-- Create Backdrops
