@@ -313,7 +313,7 @@ local function MyCvars()
 		SetCVar('showToastOffline', 0)
 		SetCVar('showToastOnline', 1)
 		SetCVar('skipStartGear', 1)
-		SetCVar('spellQueueWindow', 100)
+		SetCVar('spellQueueWindow', 200)
 		SetCVar('TargetPriorityCombatLock', 1)
 		SetCVar('UberTooltips', 1)
 		SetCVar('minimapAltitudeHintMode', 2) --Change minimap altitude difference display. 0=none, 1=darken, 2=arrows
@@ -394,6 +394,24 @@ local function SetFont(obj, font, size, style, sr, sg, sb, sa, sox, soy, r, g, b
 	if sox and soy then obj:SetShadowOffset(sox, soy) end
 	if r and g and b then obj:SetTextColor(r, g, b)
 	elseif r then obj:SetAlpha(r) end
+end
+
+local function SkadaStyler()
+	local skada = _G['SkadaBarWindow1']
+	local frame = CreateFrame('frame', 'RFM_SkadaStyler', skada, BackdropTemplateMixin and "BackdropTemplate")
+	local background = frame:CreateTexture('RFM_SkadaStylerBackground', 'BACKGROUND')
+
+	frame:SetBackdrop(cfg.Border)
+	frame:SetBackdropBorderColor(0, 0, 0, 1)
+	frame:SetFrameLevel(0)
+
+	local skada2 = _G['SkadaBarWindow2']
+	frame:SetPoint('TOPLEFT', skada, -1, 1)
+	frame:SetPoint('BOTTOMRIGHT', skada2, 1, 2)
+
+	background:SetAllPoints(frame)
+	background:SetTexture(LSM:Fetch('background', 'Solid'))
+	background:SetVertexColor(0, 0, 0, 0.5)
 end
 
 local function FontStyler()
@@ -575,4 +593,5 @@ function RFM:OnEnable()
 	C_Timer.After(5, TSM_PopupHider)
 	C_Timer.After(5, UpdateDataTexts)
 	C_Timer.After(3, PlaceChat)
+	C_Timer.After(3, SkadaStyler)
 end
