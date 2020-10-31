@@ -364,7 +364,6 @@ end
 local function ChatTabStyler(frame, i)
 	local BlizzardFrame = frame
 	local BlizzardBackground = _G[frame:GetName() .. 'Background']
-	local BlizzardTab = _G[frame:GetName() .. 'Tab']
 	local BlizzardTabText = _G[frame:GetName() .. 'TabText']
 	local name = 'RFM_Chat'
 	local Chat = CreateFrame('Frame', name .. i, BlizzardFrame, BackdropTemplateMixin and "BackdropTemplate")
@@ -385,6 +384,32 @@ local function ChatTabStyler(frame, i)
 	local font = LSM:Fetch('font', 'RUF')
 	BlizzardTabText:SetFont(font, 20, 'OUTLINE')
 	BlizzardTabText:SetText(BlizzardTabText:GetText():upper())
+
+	local tabs = {
+		'Left',
+		'Middle',
+		'Right',
+		'HighlightLeft',
+		'HighlightMiddle',
+		'HighlightRight',
+		'SelectedLeft',
+		'SelectedMiddle',
+		'SelectedRight',
+	}
+
+	for k,v in pairs(tabs) do
+		local BlizzardTab = _G[frame:GetName() .. 'Tab' .. v]
+		BlizzardTab:SetAlpha(0)
+		BlizzardTab:SetIgnoreParentAlpha(true)
+	end
+
+end
+
+local function MoveGeneralDockManager()
+	local dock = _G['GeneralDockManager']
+
+	dock:SetPoint('BOTTOMLEFT', ChatFrame1, 'TOPLEFT', -4, 0)
+	dock:SetPoint('BOTTOMRIGHT', ChatFrame1, 'TOPRIGHT', 0, 0)
 end
 
 local function SetFont(obj, font, size, style, sr, sg, sb, sa, sox, soy, r, g, b)
@@ -593,5 +618,6 @@ function RFM:OnEnable()
 	C_Timer.After(5, TSM_PopupHider)
 	C_Timer.After(5, UpdateDataTexts)
 	C_Timer.After(3, PlaceChat)
+	C_Timer.After(3, MoveGeneralDockManager)
 	C_Timer.After(3, SkadaStyler)
 end
