@@ -432,11 +432,13 @@ local function SkadaStyler()
 
 	local skada2 = _G['SkadaBarWindow2']
 	frame:SetPoint('TOPLEFT', skada, -1, 1)
-	frame:SetPoint('BOTTOMRIGHT', skada2, 1, 2)
+	frame:SetPoint('BOTTOMRIGHT', skada2, 1, 4)
 
 	background:SetAllPoints(frame)
 	background:SetTexture(LSM:Fetch('background', 'Solid'))
 	background:SetVertexColor(0, 0, 0, 0.5)
+
+	frame:SetParent(skada)
 end
 
 local function FontStyler()
