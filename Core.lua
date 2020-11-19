@@ -181,9 +181,9 @@ local function MyCvars()
 		SetCVar('horizonStart', 5000) -- Maximum visible distance. 5000 Max farclip beyond that is always foggy.
 		SetCVar('farclip', 8000) -- Maximum view distance of terrain in fog
 		SetCVar('ffxAntiAliasingMode', 3) -- CMAA
-		SetCVar('lodObjectCullDist', 100) -- Distance to stop drawing lod objects. Default 30.
-		SetCVar('lodObjectCullSize', 10) -- size of objects to cull. Default 15. Higher = Bigger objects get culled at distance.
-		SetCVar('lodObjectFadeScale', 100) -- Default 100.
+		SetCVar('lodObjectCullDist', 175) -- Distance to stop drawing lod objects. Default 30.
+		SetCVar('lodObjectCullSize', 20) -- size of objects to cull. Default 15. Higher = Bigger objects get culled at distance.
+		SetCVar('lodObjectFadeScale', 75) -- Default 100.
 		SetCVar('lodObjectMinSize', 10) -- Default 20.
 		SetCVar('M2ForceAdditiveParticleSort', 1) -- Not sure, glowy shit?
 		SetCVar('M2UseThreads', 1)
@@ -217,8 +217,8 @@ local function MyCvars()
 		SetCVar('assaoShadowPower', 1.25)
 		SetCVar('useHighResolutionUITextures', 1)
 		SetCVar('waterDetail', 2) -- Actually looks better than 3 since the reflection warps a little over the water.
-		SetCVar('wmoDoodadDist', 500)
-		SetCVar('wmoLodDist', 500)
+		SetCVar('wmoDoodadDist', 2000)
+		SetCVar('wmoLodDist', 1000)
 		SetCVar('volumeFog', 1)
 		SetCVar('volumeFogLevel', 3)
 		SetCVar('spellClutter', 100) -- -1 Default
@@ -236,9 +236,9 @@ local function MyCvars()
 		SetCVar('RAIDhorizonStart', 1000)
 		SetCVar('RAIDfarclip', 4000)
 		SetCVar('RAIDlodObjectCullDist', 50)
-		SetCVar('RAIDlodObjectCullSize', 15)
+		SetCVar('RAIDlodObjectCullSize', 20)
 		SetCVar('RAIDlodObjectFadeScale', 50)
-		SetCVar('RAIDlodObjectMinSize', 20)
+		SetCVar('RAIDlodObjectMinSize', 10)
 		SetCVar('RAIDparticleDensity', 25)
 		SetCVar('RAIDparticleMTDensity', 50)
 		SetCVar('RAIDreflectionMode', 2)
@@ -248,7 +248,7 @@ local function MyCvars()
 		SetCVar('RAIDshadowTextureSize', 512)
 		SetCVar('RAIDSSAO', 0)
 		SetCVar('RAIDwaterDetail', 1)
-		SetCVar('RAIDwmoLodDist', 400)
+		SetCVar('RAIDwmoLodDist', 200)
 		SetCVar('RAIDTerrainLodDiv', 64) -- 768 Default
 		SetCVar('RAIDTerrainLodDist', 128) -- 400 Default
 	end
@@ -310,7 +310,7 @@ local function MyCvars()
 		SetCVar('showToastOffline', 0)
 		SetCVar('showToastOnline', 1)
 		SetCVar('skipStartGear', 1)
-		SetCVar('spellQueueWindow', 200)
+		SetCVar('spellQueueWindow', 70)
 		SetCVar('TargetPriorityCombatLock', 1)
 		SetCVar('UberTooltips', 1)
 		SetCVar('minimapAltitudeHintMode', 2) --Change minimap altitude difference display. 0=none, 1=darken, 2=arrows
