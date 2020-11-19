@@ -172,16 +172,15 @@ local function MyCvars()
 		SetCVar('EmitterCombatRange', 1200) -- Weapon / Shoulder Glows
 		SetCVar('NonEmitterCombatRange', 6400)
 		SetCVar('entityShadowFadeScale', 100)
-		SetCVar('entityLodDist', 10)  -- No idea, default 10.
+		SetCVar('entityLodDist', 10) -- No idea, default 10.
 		SetCVar('entityLodOffset', 25) -- No idea, default 10. Either of these entityLod settings being higher fixes double pig tail blood elf hair from sticking out when zoomed out.
 		SetCVar('groundEffectDensity', 256)
-		SetCVar('groundEffectDist', 500)
+		SetCVar('groundEffectDist', 500) -- 500 Max
 		SetCVar('groundEffectFade', 128)
-		SetCVar('gxMaxFrameLatency', 2)
-		SetCVar('horizonStart', 4250) -- Maximum visible distance. 5000 Max farclip beyond that is always foggy.
+		SetCVar('gxMaxFrameLatency', 3)
+		SetCVar('horizonStart', 5000) -- Maximum visible distance. 5000 Max farclip beyond that is always foggy.
 		SetCVar('farclip', 8000) -- Maximum view distance of terrain in fog
 		SetCVar('ffxAntiAliasingMode', 3) -- CMAA
-		if RFM.Client == 1 then SetCVar('lightMode', 2) end -- Lighting effects 0-2, 2 best.
 		SetCVar('lodObjectCullDist', 100) -- Distance to stop drawing lod objects. Default 30.
 		SetCVar('lodObjectCullSize', 10) -- size of objects to cull. Default 15. Higher = Bigger objects get culled at distance.
 		SetCVar('lodObjectFadeScale', 100) -- Default 100.
@@ -192,7 +191,7 @@ local function MyCvars()
 		SetCVar('maxFPSBk', 30)
 		SetCVar('maxFPSLoading', 15)
 		SetCVar('targetFPS', 0)
-		SetCVar('MSAAAlphaTest', 0) -- Causes weird flickering in 8.3!
+		SetCVar('MSAAAlphaTest', 1)
 		SetCVar('MSAAQuality', 2, 0) -- 2, 0
 		SetCVar('occlusionMaxJobs', 6) -- Occlusion threads? Default 3
 		SetCVar('particleDensity', 100) -- Particle Density
@@ -204,7 +203,6 @@ local function MyCvars()
 		SetCVar('shadowMode', 3)
 		SetCVar('shadowSoft', 1) -- Soft Blurred Edge shadows.
 		SetCVar('shadowTextureSize', 1024) -- With Soft shadows there is no need for higher resolution shadows.
-		if RFM.Client == 1 then SetCVar('spellEffectLevel', 50) end
 		SetCVar('SSAO', 4)
 		SetCVar('assaoBlurPassCount', 0)
 		SetCVar('assaoDetailShadowStrength', 5) -- SSAO strength on small details like hair.
@@ -248,7 +246,6 @@ local function MyCvars()
 		SetCVar('RAIDshadowSoft', 1)
 		SetCVar('RAIDshadowMode', 2)
 		SetCVar('RAIDshadowTextureSize', 512)
-		if RFM.Client == 1 then SetCVar('RAIDspellEffectLevel', 15) end
 		SetCVar('RAIDSSAO', 0)
 		SetCVar('RAIDwaterDetail', 1)
 		SetCVar('RAIDwmoLodDist', 400)
