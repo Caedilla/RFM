@@ -181,8 +181,8 @@ local function MyCvars()
 		SetCVar('horizonStart', 5000) -- Maximum visible distance. 5000 Max farclip beyond that is always foggy.
 		SetCVar('farclip', 8000) -- Maximum view distance of terrain in fog
 		SetCVar('ffxAntiAliasingMode', 3) -- CMAA
-		SetCVar('lodObjectCullDist', 175) -- Distance to stop drawing lod objects. Default 30.
-		SetCVar('lodObjectCullSize', 20) -- size of objects to cull. Default 15. Higher = Bigger objects get culled at distance.
+		SetCVar('lodObjectCullDist', 100) -- Distance to stop drawing lod objects. Default 30.
+		SetCVar('lodObjectCullSize', 30) -- size of objects to cull. Default 15. Higher = Bigger objects get culled at distance.
 		SetCVar('lodObjectFadeScale', 75) -- Default 100.
 		SetCVar('lodObjectMinSize', 10) -- Default 20.
 		SetCVar('M2ForceAdditiveParticleSort', 1) -- Not sure, glowy shit?
@@ -223,7 +223,7 @@ local function MyCvars()
 		SetCVar('volumeFogLevel', 3)
 		SetCVar('spellClutter', 100) -- -1 Default
 		SetCVar('TerrainLodDiv', 64) -- 768 Default
-		SetCVar('TerrainLodDist', 512) -- 400 Default
+		SetCVar('TerrainLodDist', 768) -- 400 Default
 		SetCVar('maxLightCount', 32)
 		SetCVar('shadowRt', 3)
 	end
@@ -236,7 +236,7 @@ local function MyCvars()
 		SetCVar('RAIDhorizonStart', 1000)
 		SetCVar('RAIDfarclip', 4000)
 		SetCVar('RAIDlodObjectCullDist', 50)
-		SetCVar('RAIDlodObjectCullSize', 20)
+		SetCVar('RAIDlodObjectCullSize', 25)
 		SetCVar('RAIDlodObjectFadeScale', 50)
 		SetCVar('RAIDlodObjectMinSize', 10)
 		SetCVar('RAIDparticleDensity', 25)
@@ -251,10 +251,11 @@ local function MyCvars()
 		SetCVar('RAIDwmoLodDist', 200)
 		SetCVar('RAIDTerrainLodDiv', 64) -- 768 Default
 		SetCVar('RAIDTerrainLodDist', 128) -- 400 Default
+		SetCVar('RAIDshadowRt', 3)
 	end
 
 	do -- Camera stuff
-		if RFM.Client == 1 then  -- Maximum Camera Range is higher in Classic
+		if RFM.Client == 1 then -- Maximum Camera Range is higher in Classic
 			SetCVar('cameraDistanceMaxZoomFactor', 2.6)
 		else
 			SetCVar('cameraDistanceMaxZoomFactor', 4)
@@ -302,7 +303,6 @@ local function MyCvars()
 		SetCVar('flightAngleLookAhead', 1) -- Spin and angle character when flying.
 		SetCVar('interactOnLeftClick', 0)
 		SetCVar('questLogOpen', 0) -- Questlog toggled off on map by default
-		SetCVar('screenshotSizeOverride', '7680x4320')
 		SetCVar('screenshotQuality', 10)
 		SetCVar('screenshotFormat', 'png')
 		SetCVar('showSpenderFeedback', 0)
