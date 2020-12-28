@@ -101,15 +101,15 @@ local function Hider()
 end
 
 local function LFRAcceptRole()
-	LFGListApplicationDialog.SignUpButton:Click()
+	--LFGListApplicationDialog.SignUpButton:Click()
 end
 
 local function LFDAcceptRole()
-	LFDRoleCheckPopupAcceptButton:Click()
+	--LFDRoleCheckPopupAcceptButton:Click()
 end
 
 local function LFGAcceptRole()
-	LFGInvitePopupAcceptButton:Click()
+	--LFGInvitePopupAcceptButton:Click()
 end
 
 local function MyCvars()
@@ -310,7 +310,7 @@ local function MyCvars()
 		SetCVar('showToastOffline', 0)
 		SetCVar('showToastOnline', 1)
 		SetCVar('skipStartGear', 1)
-		SetCVar('spellQueueWindow', 70)
+		SetCVar('spellQueueWindow', 200)
 		SetCVar('TargetPriorityCombatLock', 1)
 		SetCVar('UberTooltips', 1)
 		SetCVar('minimapAltitudeHintMode', 2) --Change minimap altitude difference display. 0=none, 1=darken, 2=arrows
@@ -595,6 +595,9 @@ function RFM:OnEnable()
 	for i=1, 10 do
 		ChatTabStyler(_G['ChatFrame' .. i], i)
 	end
+
+	ChatAlertFrame:ClearAllPoints()
+	ChatAlertFrame:SetPoint('BOTTOMLEFT','ChatFrame1ButtonFrame','BOTTOMLEFT',-400,200)
 
 	-- Automatic Queue Accept
 	LFGListApplicationDialog:SetScript("OnShow", LFRAcceptRole)
