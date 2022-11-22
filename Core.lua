@@ -101,15 +101,15 @@ local function Hider()
 end
 
 local function LFRAcceptRole()
-	--LFGListApplicationDialog.SignUpButton:Click()
+	LFGListApplicationDialog.SignUpButton:Click()
 end
 
 local function LFDAcceptRole()
-	--LFDRoleCheckPopupAcceptButton:Click()
+	LFDRoleCheckPopupAcceptButton:Click()
 end
 
 local function LFGAcceptRole()
-	--LFGInvitePopupAcceptButton:Click()
+	LFGInvitePopupAcceptButton:Click()
 end
 
 local function MyCvars()
@@ -151,19 +151,19 @@ local function MyCvars()
 		SetCVar('nameplateShowEnemyPets', 1)
 		SetCVar('nameplateShowEnemyTotems', 1)
 		SetCVar('nameplateTargetRadialPosition', 1) -- Target Nameplate stays on screen when the unit is offscreen.
+		SetCVar('nameplateOverlapH', 0.6)
+		SetCVar('nameplateOverlapH', 0.6)
 	end
 
 	do -- Sound
 		SetCVar('Sound_MasterVolume', 0.1)
 		SetCVar('Sound_DialogVolume', 1.0)
-		SetCVar('Sound_MusicVolume', 0.1)
-		SetCVar('Sound_AmbienceVolume', 0.5)
+		SetCVar('Sound_MusicVolume', 0.2)
+		SetCVar('Sound_AmbienceVolume', 0.2)
 		SetCVar('Sound_SFXVolume', 0.2)
 		SetCVar('Sound_ZoneMusicNoDelay', 1)
 		SetCVar('Sound_EnableSoundWhenGameIsInBG', 1)
 		SetCVar('Sound_EnableErrorSpeech', 0)
-		SetCVar('nameplateOverlapH', 0.6)
-		SetCVar('nameplateOverlapH', 0.6)
 	end
 
 	do -- Normal World Graphics
@@ -174,8 +174,8 @@ local function MyCvars()
 		SetCVar('entityShadowFadeScale', 100)
 		SetCVar('entityLodDist', 10) -- No idea, default 10.
 		SetCVar('entityLodOffset', 25) -- No idea, default 10. Either of these entityLod settings being higher fixes double pig tail blood elf hair from sticking out when zoomed out.
-		SetCVar('groundEffectDensity', 256)
-		SetCVar('groundEffectDist', 500) -- 500 Max
+		SetCVar('groundEffectDensity', 128)
+		SetCVar('groundEffectDist', 256) -- 500 Max
 		SetCVar('groundEffectFade', 128)
 		SetCVar('gxMaxFrameLatency', 3)
 		SetCVar('horizonStart', 5000) -- Maximum visible distance. 5000 Max farclip beyond that is always foggy.
@@ -195,7 +195,7 @@ local function MyCvars()
 		SetCVar('MSAAQuality', 2, 0) -- 2, 0
 		SetCVar('occlusionMaxJobs', 6) -- Occlusion threads? Default 3
 		SetCVar('particleDensity', 100) -- Particle Density
-		SetCVar('particleMTDensity', 100) -- Particle Density for Multi-threaded particles. 100 Max.
+		SetCVar('particleMTDensity', 50) -- Particle Density for Multi-threaded particles. 100 Max.
 		SetCVar('projectedTextures', 1)
 		SetCVar('reflectionDownscale', 1) -- Downscale slightly, at 0 the reflections look too crisp.
 		SetCVar('reflectionMode', 3) -- Reflect everything possible. Default 3
@@ -221,7 +221,7 @@ local function MyCvars()
 		SetCVar('wmoLodDist', 1000)
 		SetCVar('volumeFog', 1)
 		SetCVar('volumeFogLevel', 3)
-		SetCVar('spellClutter', 100) -- -1 Default
+		SetCVar('spellClutter', -1) -- -1 Default
 		SetCVar('TerrainLodDiv', 64) -- 768 Default
 		SetCVar('TerrainLodDist', 768) -- 400 Default
 		SetCVar('maxLightCount', 32)
@@ -233,8 +233,9 @@ local function MyCvars()
 		SetCVar('RAIDentityShadowFadeScale', 10)
 		SetCVar('RAIDgroundEffectDensity', 64)
 		SetCVar('RAIDgroundEffectDist', 32)
-		SetCVar('RAIDhorizonStart', 1000)
-		SetCVar('RAIDfarclip', 4000)
+		SetCVar('RAIDhorizonStart', 600)
+		SetCVar('RAIDfarclip', 600)
+		SetCVar('RAIDhorizonClip', 600)
 		SetCVar('RAIDlodObjectCullDist', 50)
 		SetCVar('RAIDlodObjectCullSize', 25)
 		SetCVar('RAIDlodObjectFadeScale', 50)
@@ -251,7 +252,12 @@ local function MyCvars()
 		SetCVar('RAIDwmoLodDist', 200)
 		SetCVar('RAIDTerrainLodDiv', 64) -- 768 Default
 		SetCVar('RAIDTerrainLodDist', 128) -- 400 Default
-		SetCVar('RAIDshadowRt', 3)
+		SetCVar('RAIDshadowRt', 0)
+		SetCVar('RAIDvolumeFogLevel', 0)
+		SetCVar('RAIDshadowMode', 1)
+		SetCVar('RAIDshadowSoft', 1) -- Soft Blurred Edge shadows.
+		SetCVar('RAIDshadowTextureSize', 1024) -- With Soft shadows there is no need for higher resolution shadows.
+		SetCVar('RAIDspellClutter', 100)
 	end
 
 	do -- Camera stuff
@@ -367,6 +373,9 @@ local function ChatTabStyler(frame, i)
 	local Background = Chat:CreateTexture(name .. i .. 'Background', 'BACKGROUND')
 
 	BlizzardFrame:SetShadowColor(0, 0, 0, 0)
+	BlizzardFrame:SetClampRectInsets(0, 0, 0, 0)
+	local font = LSM:Fetch('font', 'PT Sans Narrow Bold')
+	BlizzardFrame:SetFont(font, 16, 'OUTLINE')
 
 	Chat:SetBackdrop(cfg.Border)
 	Chat:SetBackdropBorderColor(0, 0, 0, 1)
@@ -376,11 +385,11 @@ local function ChatTabStyler(frame, i)
 	Background:SetAllPoints(Chat)
 	Background:SetTexture(LSM:Fetch('background', 'Solid'))
 	Background:SetVertexColor(0, 0, 0, 0.5)
-	BlizzardTabText:SetWidth(BlizzardTabText:GetStringWidth()+2)
-	BlizzardTabText:SetHeight(BlizzardTabText:GetStringHeight()+2)
-	local font = LSM:Fetch('font', 'RUF')
-	BlizzardTabText:SetFont(font, 20, 'OUTLINE')
-	BlizzardTabText:SetText(BlizzardTabText:GetText():upper())
+	--BlizzardTabText:SetWidth(BlizzardTabText:GetStringWidth()+2)
+	--BlizzardTabText:SetHeight(BlizzardTabText:GetStringHeight()+2)
+	font = LSM:Fetch('font', 'RUF')
+	--BlizzardTabText:SetFont(font, 20, 'OUTLINE')
+	--BlizzardTabText:SetText(BlizzardTabText:GetText():upper())
 
 	local tabs = {
 		'Left',
@@ -396,8 +405,8 @@ local function ChatTabStyler(frame, i)
 
 	for k,v in pairs(tabs) do
 		local BlizzardTab = _G[frame:GetName() .. 'Tab' .. v]
-		BlizzardTab:SetAlpha(0)
-		BlizzardTab:SetIgnoreParentAlpha(true)
+		--BlizzardTab:SetAlpha(0)
+		--BlizzardTab:SetIgnoreParentAlpha(true)
 	end
 
 end
@@ -409,9 +418,9 @@ local function MoveGeneralDockManager()
 	dock:SetPoint('BOTTOMRIGHT', ChatFrame1, 'TOPRIGHT', 0, 0)
 end
 
-local function SetFont(obj, font, size, style, sr, sg, sb, sa, sox, soy, r, g, b)
+local function StyleFont(obj, font, size, flags, sr, sg, sb, sa, sox, soy, r, g, b)
 	if not obj then return end
-	obj:SetFont(font, size, style)
+	obj:SetFont(font, size, flags)
 	if sr and sg and sb then obj:SetShadowColor(sr, sg, sb, sa) end
 	if sox and soy then obj:SetShadowOffset(sox, soy) end
 	if r and g and b then obj:SetTextColor(r, g, b)
@@ -451,115 +460,113 @@ local function FontStyler()
 
 	--_G.CHAT_FONT_HEIGHTS = {6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20}
 
-		--_G.NAMEPLATE_FONT		= NAMEFONT
-		_G.UNIT_NAME_FONT		= NAMEFONT
-		_G.DAMAGE_TEXT_FONT		= COMBAT
-		_G.STANDARD_TEXT_FONT	= NORMAL
+	--_G.NAMEPLATE_FONT		= NAMEFONT
+	_G.UNIT_NAME_FONT		= NAMEFONT
+	_G.DAMAGE_TEXT_FONT		= COMBAT
+	_G.STANDARD_TEXT_FONT	= NORMAL
 
-		--SetFont(_G.NumberFontNormal,					LSM:Fetch('font', 'Homespun'), 10, 'MONOCHROMEOUTLINE', 1, 1, 1, 0, 0, 0)
-		--SetFont(_G.GameFontNormalSmall,					NORMAL, 12, nil, nil, nil, nil, nil, nil, nil, unpack(E.media.rgbvaluecolor))
-		SetFont(_G.AchievementFont_Small,				NORMAL, NORMALSIZE)			-- Achiev dates
-		SetFont(_G.BossEmoteNormalHuge,					NORMAL, 24)									-- Talent Title
-		SetFont(_G.ChatBubbleFont,						BUBBLE, NORMALSIZE, OUTLINE)
-		SetFont(_G.CoreAbilityFont,						NORMAL, 26)									-- Core abilities(title)
-		SetFont(_G.DestinyFontHuge,						NORMAL, 32, nil, 0,0,0,0, BIGOFFSET)	-- Garrison Mission Report
-		SetFont(_G.DestinyFontMed,						NORMAL, 14)									-- Added in 7.3.5 used for ?
-		SetFont(_G.Fancy12Font,							NORMAL, 12)									-- Added in 7.3.5 used for ?
-		SetFont(_G.Fancy14Font,							NORMAL, 14)									-- Added in 7.3.5 used for ?
-		SetFont(_G.Fancy22Font,							NORMAL, 20)									-- Talking frame Title font
-		SetFont(_G.Fancy24Font,							NORMAL, 20)									-- Artifact frame - weapon name
-		SetFont(_G.FriendsFont_Large,					NORMAL, NORMALSIZE)
-		SetFont(_G.FriendsFont_Normal,					NORMAL, NORMALSIZE)
-		SetFont(_G.FriendsFont_Small,					NORMAL, NORMALSIZE)
-		SetFont(_G.FriendsFont_UserText,				NORMAL, NORMALSIZE)
-		SetFont(_G.Game12Font,							NORMAL, 12)									-- PVP Stuff
-		SetFont(_G.Game13FontShadow,					NORMAL, 14, OUTLINE)									-- InspectPvpFrame
-		SetFont(_G.Game15Font_o1,						NORMAL, 24, OUTLINE)						-- CharacterStatsPane (ItemLevelFrame)
-		SetFont(_G.Game16Font,							NORMAL, 16, OUTLINE)									-- Added in 7.3.5 used for ?
-		SetFont(_G.Game18Font,							NORMAL, 18, OUTLINE)									-- MissionUI Bonus Chance
-		SetFont(_G.Game24Font, 							NORMAL, 24, OUTLINE)									-- Garrison Mission level (in detail frame)
-		SetFont(_G.Game30Font,							NORMAL, 30, OUTLINE)									-- Mission Level
-		SetFont(_G.Game42Font,							NORMAL, 42, OUTLINE)									-- PVP Stuff
-		SetFont(_G.Game46Font,							NORMAL, 46, OUTLINE)									-- Added in 7.3.5 used for ?
-		SetFont(_G.Game48Font,							NORMAL, 48, OUTLINE)
-		SetFont(_G.Game48FontShadow,					NORMAL, 48, nil, 0,0,0,0, BIGOFFSET)
-		SetFont(_G.Game60Font,							NORMAL, 60)
-		SetFont(_G.Game72Font,							NORMAL, 72)
-		SetFont(_G.Game120Font,							NORMAL, 120)
-		SetFont(_G.GameFont_Gigantic,					NORMAL, 32, nil, 0,0,0,0, BIGOFFSET)	-- Used at the install steps
-		SetFont(_G.GameFontHighlightMedium,				NORMAL, 15, OUTLINE)									-- Fix QuestLog Title mouseover
-		SetFont(_G.GameFontHighlightSmall2,				NORMAL, NORMALSIZE)							-- Skill or Recipe description on TradeSkill frame
-		SetFont(_G.GameFontNormalHuge2,					NORMAL, 24, OUTLINE)									-- Mythic weekly best dungeon name
-		SetFont(_G.GameFontNormalLarge2,				NORMAL, 15, OUTLINE) 								-- Garrison Follower Names
-		SetFont(_G.GameFontNormalMed2,					NORMAL, NORMALSIZE*1.1)						-- Quest tracker
-		SetFont(_G.GameFontNormalMed3,					NORMAL, 15, OUTLINE)
-		SetFont(_G.GameFontNormalSmall2,				NORMAL, 12, OUTLINE)									-- MissionUI Followers names
-		SetFont(_G.GameTooltipHeader,					NORMAL, NORMALSIZE)
-		SetFont(_G.InvoiceFont_Med,						NORMAL, 12)									-- Mail
-		SetFont(_G.InvoiceFont_Small,					NORMAL, NORMALSIZE)							-- Mail
-		SetFont(_G.MailFont_Large,						NORMAL, 14)									-- Mail
-		SetFont(_G.NumberFont_Outline_Huge,				NUMBER, 28, 'THICKOUTLINE', 28)
-		SetFont(_G.NumberFont_Outline_Large,			NUMBER, 15, 'OUTLINE')
-		SetFont(_G.NumberFont_Outline_Med,				NUMBER, NORMALSIZE*1.1, 'OUTLINE')
-		SetFont(_G.NumberFont_OutlineThick_Mono_Small,	NUMBER, NORMALSIZE, 'OUTLINE')
-		SetFont(_G.NumberFont_Shadow_Med,				NORMAL, NORMALSIZE)							-- Chat EditBox
-		SetFont(_G.NumberFont_Shadow_Small,				NORMAL, NORMALSIZE)
-		SetFont(_G.NumberFontNormalSmall,				NORMAL, 11, 'OUTLINE')						-- Calendar, EncounterJournal
-		SetFont(_G.Number11Font,						NORMAL, 11)
-		SetFont(_G.Number12Font,						NORMAL, 12)
-		SetFont(_G.Number15Font,						NORMAL, 15)
-		SetFont(_G.PriceFont,							NORMAL, 13)
-		SetFont(_G.PVPArenaTextString,					NORMAL, 22, 'OUTLINE')
-		SetFont(_G.PVPInfoTextString,					NORMAL, 22, 'OUTLINE')
-		SetFont(_G.QuestFont,							NORMAL, NORMALSIZE)
-		SetFont(_G.QuestFont_Enormous, 					NORMAL, 24, nil, 0,0,0,0, NORMALOFFSET) -- Garrison Titles
-		SetFont(_G.QuestFont_Huge,						NORMAL, 15, nil, 0,0,0,0, BIGOFFSET)	-- Quest rewards title(Rewards)
-		SetFont(_G.QuestFont_Large,						NORMAL, 14)
-		SetFont(_G.QuestFont_Shadow_Huge,				NORMAL, 15, nil, 0,0,0,0, NORMALOFFSET) -- Quest Title
-		SetFont(_G.QuestFont_Shadow_Small,				NORMAL, 14, nil, 0,0,0,0, NORMALOFFSET)
-		SetFont(_G.QuestFont_Super_Huge,				NORMAL, 22, nil, 0,0,0,0, BIGOFFSET)
-		SetFont(_G.ReputationDetailFont,				NORMAL, NORMALSIZE)							-- Rep Desc when clicking a rep
-		SetFont(_G.SubZoneTextFont,						NORMAL, 24, 'OUTLINE')			-- World Map(SubZone)
-		SetFont(_G.SubZoneTextString,					NORMAL, 25, 'OUTLINE')
-		SetFont(_G.SystemFont_Huge1, 					NORMAL, 20)									-- Garrison Mission XP
-		SetFont(_G.SystemFont_Huge1_Outline, 			NORMAL, 18, 'OUTLINE')			-- Garrison Mission Chance
-		SetFont(_G.SystemFont_Large,					NORMAL, 15)
-		SetFont(_G.SystemFont_Med1,						NORMAL, NORMALSIZE)
-		SetFont(_G.SystemFont_Med3,						NORMAL, NORMALSIZE*1.1)
-		SetFont(_G.SystemFont_Outline,					NORMAL, 13, 'OUTLINE')			-- Pet level on World map
-		SetFont(_G.SystemFont_Outline_Small,			NUMBER, NORMALSIZE, 'OUTLINE')
-		SetFont(_G.SystemFont_OutlineThick_Huge2,		NORMAL, 20, 'THICKOUTLINE')
-		SetFont(_G.SystemFont_OutlineThick_WTF,			NORMAL, 32, 'OUTLINE')			-- World Map
-		SetFont(_G.SystemFont_Shadow_Huge1,				NORMAL, 20, 'OUTLINE')			-- Raid Warning, Boss emote frame too
-		SetFont(_G.SystemFont_Shadow_Huge3,				NORMAL, 22, nil, 0,0,0,0, BIGOFFSET)	-- FlightMap
-		SetFont(_G.SystemFont_Shadow_Large,				NORMAL, 15)
-		SetFont(_G.SystemFont_Shadow_Large_Outline,		NUMBER, 20, 'OUTLINE')
-		SetFont(_G.SystemFont_Shadow_Med1,				NORMAL, NORMALSIZE)
-		SetFont(_G.SystemFont_Shadow_Med2,				NORMAL, 13 * 1.1)							-- Shows Order resourses on OrderHallTalentFrame
-		SetFont(_G.SystemFont_Shadow_Med3,				NORMAL, 13 * 1.1)
-		SetFont(_G.SystemFont_Shadow_Med3,				NORMAL, NORMALSIZE*1.1)
-		SetFont(_G.SystemFont_Shadow_Outline_Huge2,		NORMAL, 20, 'OUTLINE')
-		SetFont(_G.SystemFont_Shadow_Small,				NORMAL, NORMALSIZE*0.9)
-		SetFont(_G.SystemFont_Small,					NORMAL, NORMALSIZE)
-		SetFont(_G.SystemFont_Tiny,						NORMAL, NORMALSIZE)
-		SetFont(_G.Tooltip_Med,							NORMAL, NORMALSIZE)
-		SetFont(_G.Tooltip_Small,						NORMAL, NORMALSIZE)
-		SetFont(_G.ZoneTextString,						NORMAL, 32, 'OUTLINE')
-		SetFont(_G.Game10Font_o1,						NORMAL, 10, 'OUTLINE')
-		SetFont(_G.SystemFont_Shadow_Huge4,				NORMAL, 27, nil, nil, nil, nil, nil, 1, -1)
-		SetFont(_G.SystemFont_Shadow_Outline_Huge4,		NORMAL, 27, 'OUTLINE', nil, nil, nil, nil, 1, -1)
-		SetFont(_G.Number11Font,						NUMBER, 11)
-		SetFont(_G.Number12Font_o1,						NUMBER, 12, 'OUTLINE')
-		SetFont(_G.Number13Font,						NUMBER, 13)
-		SetFont(_G.Number13FontGray,					NUMBER, 13)
-		SetFont(_G.Number13FontWhite,					NUMBER, 13, OUTLINE)
-		SetFont(_G.Number13FontYellow,					NUMBER, 13, OUTLINE)
-		SetFont(_G.Number14FontWhite,					NUMBER, 14, OUTLINE)
-		SetFont(_G.Number18Font,						NUMBER, 18, OUTLINE)
-		SetFont(_G.Number18FontWhite,					NUMBER, 18, OUTLINE)
-		SetFont(_G.FriendsFont_11,						NORMAL, 11, OUTLINE)
-		SetFont(_G.SpellFont_Small,						NORMAL, 10, OUTLINE)
-		SetFont(_G.SubSpellFont,						NORMAL, 11, OUTLINE) -- Spellbook Sub Names
+	StyleFont(_G.AchievementFont_Small,NORMAL, NORMALSIZE, '') -- Achiev dates
+	StyleFont(_G.BossEmoteNormalHuge,NORMAL, 24, '') -- Talent Title
+	StyleFont(_G.ChatBubbleFont,BUBBLE, NORMALSIZE, OUTLINE)
+	StyleFont(_G.CoreAbilityFont,NORMAL, 26, '') -- Core abilities(title)
+	StyleFont(_G.DestinyFontHuge,NORMAL, 32, '', 0,0,0,0, BIGOFFSET) -- Garrison Mission Report
+	StyleFont(_G.DestinyFontMed,NORMAL, 14, '') -- Added in 7.3.5 used for ?
+	StyleFont(_G.Fancy12Font,NORMAL, 12, '') -- Added in 7.3.5 used for ?
+	StyleFont(_G.Fancy14Font,NORMAL, 14, '') -- Added in 7.3.5 used for ?
+	StyleFont(_G.Fancy22Font,NORMAL, 20, '') -- Talking frame Title font
+	StyleFont(_G.Fancy24Font,NORMAL, 20, '') -- Artifact frame - weapon name
+	StyleFont(_G.FriendsFont_Large,NORMAL, NORMALSIZE, '')
+	StyleFont(_G.FriendsFont_Normal,NORMAL, NORMALSIZE, '')
+	StyleFont(_G.FriendsFont_Small,NORMAL, NORMALSIZE, '')
+	StyleFont(_G.FriendsFont_UserText,NORMAL, NORMALSIZE, '')
+	StyleFont(_G.Game12Font,NORMAL, 12, '') -- PVP Stuff
+	StyleFont(_G.Game13FontShadow,NORMAL, 14, OUTLINE, '') -- InspectPvpFrame
+	StyleFont(_G.Game15Font_o1,NORMAL, 24, OUTLINE, '') -- CharacterStatsPane (ItemLevelFrame)
+	StyleFont(_G.Game16Font,NORMAL, 16, OUTLINE, '') -- Added in 7.3.5 used for ?
+	StyleFont(_G.Game18Font,NORMAL, 18, OUTLINE, '') -- MissionUI Bonus Chance
+	StyleFont(_G.Game24Font, NORMAL, 24, OUTLINE, '') -- Garrison Mission level (in detail frame)
+	StyleFont(_G.Game30Font,NORMAL, 30, OUTLINE, '') -- Mission Level
+	StyleFont(_G.Game42Font,NORMAL, 42, OUTLINE, '') -- PVP Stuff
+	StyleFont(_G.Game46Font,NORMAL, 46, OUTLINE, '') -- Added in 7.3.5 used for ?
+	StyleFont(_G.Game48Font,NORMAL, 48, OUTLINE, '')
+	StyleFont(_G.Game48FontShadow,NORMAL, 48, '', 0,0,0,0, BIGOFFSET)
+	StyleFont(_G.Game60Font,NORMAL, 60, '')
+	StyleFont(_G.Game72Font,NORMAL, 72, '')
+	StyleFont(_G.Game120Font,NORMAL, 120, '')
+	StyleFont(_G.GameFont_Gigantic,NORMAL, 32, '', 0,0,0,0, BIGOFFSET) -- Used at the install steps
+	StyleFont(_G.GameFontHighlightMedium,NORMAL, 15, OUTLINE) -- Fix QuestLog Title mouseover
+	StyleFont(_G.GameFontHighlightSmall2,NORMAL, NORMALSIZE, '') -- Skill or Recipe description on TradeSkill frame
+	StyleFont(_G.GameFontNormalHuge2,NORMAL, 24, OUTLINE) -- Mythic weekly best dungeon name
+	StyleFont(_G.GameFontNormalLarge2,NORMAL, 15, OUTLINE) -- Garrison Follower Names
+	StyleFont(_G.GameFontNormalMed2,NORMAL, NORMALSIZE*1.1, '') -- Quest tracker
+	StyleFont(_G.GameFontNormalMed3,NORMAL, 15, OUTLINE)
+	StyleFont(_G.GameFontNormalSmall2,NORMAL, 12, OUTLINE) -- MissionUI Followers names
+	StyleFont(_G.GameTooltipHeader,NORMAL, NORMALSIZE, '')
+	StyleFont(_G.InvoiceFont_Med,NORMAL, 12, '') -- Mail
+	StyleFont(_G.InvoiceFont_Small,NORMAL, NORMALSIZE, '') -- Mail
+	StyleFont(_G.MailFont_Large,NORMAL, 14, '') -- Mail
+	StyleFont(_G.NumberFont_Outline_Huge,NUMBER, 28, 'THICKOUTLINE', 28)
+	StyleFont(_G.NumberFont_Outline_Large,NUMBER, 15, 'OUTLINE')
+	StyleFont(_G.NumberFont_Outline_Med,NUMBER, NORMALSIZE*1.1, 'OUTLINE')
+	StyleFont(_G.NumberFont_OutlineThick_Mono_Small,NUMBER, NORMALSIZE, 'OUTLINE')
+	StyleFont(_G.NumberFont_Shadow_Med,NORMAL, NORMALSIZE, '') -- Chat EditBox
+	StyleFont(_G.NumberFont_Shadow_Small,NORMAL, NORMALSIZE, '')
+	StyleFont(_G.NumberFontNormalSmall,NORMAL, 11, 'OUTLINE') -- Calendar, EncounterJournal
+	StyleFont(_G.Number11Font,NORMAL, 11, '')
+	StyleFont(_G.Number12Font,NORMAL, 12, '')
+	StyleFont(_G.Number15Font,NORMAL, 15, '')
+	StyleFont(_G.PriceFont,NORMAL, 13, '')
+	StyleFont(_G.PVPArenaTextString,NORMAL, 22, 'OUTLINE')
+	StyleFont(_G.PVPInfoTextString,NORMAL, 22, 'OUTLINE')
+	StyleFont(_G.QuestFont,NORMAL, NORMALSIZE, '')
+	StyleFont(_G.QuestFont_Enormous, NORMAL, 24, '', 0,0,0,0, NORMALOFFSET) -- Garrison Titles
+	StyleFont(_G.QuestFont_Huge,NORMAL, 15, '', 0,0,0,0, BIGOFFSET) -- Quest rewards title(Rewards)
+	StyleFont(_G.QuestFont_Large,NORMAL, 14)
+	StyleFont(_G.QuestFont_Shadow_Huge,NORMAL, 15, '', 0,0,0,0, NORMALOFFSET) -- Quest Title
+	StyleFont(_G.QuestFont_Shadow_Small,NORMAL, 14, '', 0,0,0,0, NORMALOFFSET)
+	StyleFont(_G.QuestFont_Super_Huge,NORMAL, 22, '', 0,0,0,0, BIGOFFSET)
+	StyleFont(_G.ReputationDetailFont,NORMAL, NORMALSIZE, '') -- Rep Desc when clicking a rep
+	StyleFont(_G.SubZoneTextFont,NORMAL, 24, 'OUTLINE') -- World Map(SubZone)
+	StyleFont(_G.SubZoneTextString,NORMAL, 25, 'OUTLINE')
+	StyleFont(_G.SystemFont_Huge1, NORMAL, 20, '') -- Garrison Mission XP
+	StyleFont(_G.SystemFont_Huge1_Outline, NORMAL, 18, 'OUTLINE') -- Garrison Mission Chance
+	StyleFont(_G.SystemFont_Large,NORMAL, 15, '')
+	StyleFont(_G.SystemFont_Med1,NORMAL, NORMALSIZE, '')
+	StyleFont(_G.SystemFont_Med3,NORMAL, NORMALSIZE*1.1, '')
+	StyleFont(_G.SystemFont_Outline,NORMAL, 13, 'OUTLINE') -- Pet level on World map
+	StyleFont(_G.SystemFont_Outline_Small,NUMBER, NORMALSIZE, 'OUTLINE')
+	StyleFont(_G.SystemFont_OutlineThick_Huge2,NORMAL, 20, 'THICKOUTLINE')
+	StyleFont(_G.SystemFont_OutlineThick_WTF,NORMAL, 32, 'OUTLINE') -- World Map
+	StyleFont(_G.SystemFont_Shadow_Huge1,NORMAL, 20, 'OUTLINE') -- Raid Warning, Boss emote frame too
+	StyleFont(_G.SystemFont_Shadow_Huge3,NORMAL, 22, '', 0,0,0,0, BIGOFFSET) -- FlightMap
+	StyleFont(_G.SystemFont_Shadow_Large,NORMAL, 15, '')
+	StyleFont(_G.SystemFont_Shadow_Large_Outline,NUMBER, 20, 'OUTLINE')
+	StyleFont(_G.SystemFont_Shadow_Med1,NORMAL, NORMALSIZE, '')
+	StyleFont(_G.SystemFont_Shadow_Med2,NORMAL, 13 * 1.1, '') -- Shows Order resourses on OrderHallTalentFrame
+	StyleFont(_G.SystemFont_Shadow_Med3,NORMAL, 13 * 1.1, '')
+	StyleFont(_G.SystemFont_Shadow_Med3,NORMAL, NORMALSIZE*1.1, '')
+	StyleFont(_G.SystemFont_Shadow_Outline_Huge2,NORMAL, 20, 'OUTLINE')
+	StyleFont(_G.SystemFont_Shadow_Small,NORMAL, NORMALSIZE*0.9, '')
+	StyleFont(_G.SystemFont_Small,NORMAL, NORMALSIZE, '')
+	StyleFont(_G.SystemFont_Tiny,NORMAL, NORMALSIZE, '')
+	StyleFont(_G.Tooltip_Med,NORMAL, NORMALSIZE, '')
+	StyleFont(_G.Tooltip_Small,NORMAL, NORMALSIZE, '')
+	StyleFont(_G.ZoneTextString,NORMAL, 32, 'OUTLINE')
+	StyleFont(_G.Game10Font_o1,NORMAL, 10, 'OUTLINE')
+	StyleFont(_G.SystemFont_Shadow_Huge4,NORMAL, 27, '', nil, nil, nil, nil, 1, -1)
+	StyleFont(_G.SystemFont_Shadow_Outline_Huge4,NORMAL, 27, 'OUTLINE', nil, nil, nil, nil, 1, -1)
+	StyleFont(_G.Number11Font,NUMBER, 11, '')
+	StyleFont(_G.Number12Font_o1,NUMBER, 12, 'OUTLINE')
+	StyleFont(_G.Number13Font,NUMBER, 13, '')
+	StyleFont(_G.Number13FontGray,NUMBER, 13, '')
+	StyleFont(_G.Number13FontWhite,NUMBER, 13, OUTLINE)
+	StyleFont(_G.Number13FontYellow,NUMBER, 13, OUTLINE)
+	StyleFont(_G.Number14FontWhite,NUMBER, 14, OUTLINE)
+	StyleFont(_G.Number18Font,NUMBER, 18, OUTLINE)
+	StyleFont(_G.Number18FontWhite,NUMBER, 18, OUTLINE)
+	StyleFont(_G.FriendsFont_11,NORMAL, 11, OUTLINE)
+	StyleFont(_G.SpellFont_Small,NORMAL, 10, OUTLINE)
+	StyleFont(_G.SubSpellFont,NORMAL, 11, OUTLINE) -- Spellbook Sub Names
 end
 
 function RFM:OnEnable()
@@ -574,7 +581,9 @@ function RFM:OnEnable()
 	end
 
 	-- Move PVP Objective Score Down a bit.
+	UIWidgetTopCenterContainerFrame:ClearAllPoints()
 	UIWidgetTopCenterContainerFrame:SetPoint('TOP', 0, -30)
+
 	UIWidgetBelowMinimapContainerFrame:ClearAllPoints()
 	UIWidgetBelowMinimapContainerFrame:SetPoint('TOP', 0, -60)
 
@@ -616,10 +625,14 @@ function RFM:OnEnable()
 	RFM.Monitor = Monitor
 
 	MyCvars()
-	C_Timer.After(1, FontStyler)
+	--C_Timer.After(5, FontStyler)
 	C_Timer.After(5, TSM_PopupHider)
 	C_Timer.After(5, UpdateDataTexts)
-	C_Timer.After(3, PlaceChat)
+	--C_Timer.After(3, PlaceChat)
 	C_Timer.After(3, MoveGeneralDockManager)
-	C_Timer.After(3, SkadaStyler)
+	--C_Timer.After(3, SkadaStyler)
+end
+
+function RFM:OnInitialize()
+	LSM:Register(SOUND,'MGS Alert', 1495882)
 end

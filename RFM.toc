@@ -1,4 +1,4 @@
-﻿## Interface: 90002
+﻿## Interface: 100002
 ## Title: RFM [|c10FF75B3Core|r]
 ## Notes: Raeli's Frame Mods. Hides frames in combat, and adds borders and stuff.
 ## Author: Raeli
