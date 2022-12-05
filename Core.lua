@@ -12,10 +12,10 @@ local cfg = {
 
 local function ShouldShow()
 	InInstance, InstanceType = IsInInstance()
-	--if InstanceType == 'raid' then return false end
-	--if IsInRaid() then return end
-	--if InstanceType == 'arena' then return false end
-	--if InstanceType == 'pvp' then return false end
+	if InstanceType == 'raid' then return false end
+	if IsInRaid() then return end
+	if InstanceType == 'arena' then return false end
+	if InstanceType == 'pvp' then return false end
 	return true
 end
 
@@ -569,6 +569,21 @@ local function FontStyler()
 	StyleFont(_G.SubSpellFont,NORMAL, 11, OUTLINE) -- Spellbook Sub Names
 end
 
+local function SetScale()
+	if InCombatLockdown() then C_Timer.After(5, SetScale) end
+	if WorldMapFrame:GetEffectiveScale() ~= 0.75 then
+		WorldMapFrame:SetScale(0.75 / WorldMapFrame:GetEffectiveScale())
+		--WorldMapFrame.BorderFrame:SetScale(1)
+		WorldMapFrameBg:Hide()
+		WorldMapFrame.BorderFrame:Hide()
+		WorldMapFrame.ScrollContainer.GetCursorPosition = function(f)
+			local x,y = MapCanvasScrollControllerMixin.GetCursorPosition(f)
+			local s = WorldMapFrame:GetScale()
+			return x/s, y/s
+		end
+	end
+end
+
 function RFM:OnEnable()
 
 	RFM.Client = 1
@@ -588,48 +603,39 @@ function RFM:OnEnable()
 	UIWidgetBelowMinimapContainerFrame:SetPoint('TOP', 0, -60)
 
 	-- Resize World Map to a better size
-	if WorldMapFrame:GetEffectiveScale() ~= 0.75 then
-		WorldMapFrame:SetScale(0.75 / WorldMapFrame:GetEffectiveScale())
-		--WorldMapFrame.BorderFrame:SetScale(1)
-		WorldMapFrameBg:Hide()
-		WorldMapFrame.BorderFrame:Hide()
-		WorldMapFrame.ScrollContainer.GetCursorPosition = function(f)
-			local x,y = MapCanvasScrollControllerMixin.GetCursorPosition(f)
-			local s = WorldMapFrame:GetScale()
-			return x/s, y/s
-		end
-	end
+	SetScale()
+
 
 	-- Create Backdrops
-	for i=1, 10 do
-		ChatTabStyler(_G['ChatFrame' .. i], i)
-	end
+	--for i=1, 10 do
+	--	ChatTabStyler(_G['ChatFrame' .. i], i)
+	--end
 
-	ChatAlertFrame:ClearAllPoints()
-	ChatAlertFrame:SetPoint('BOTTOMLEFT','ChatFrame1ButtonFrame','BOTTOMLEFT',-400,200)
+	--ChatAlertFrame:ClearAllPoints()
+	--ChatAlertFrame:SetPoint('BOTTOMLEFT','ChatFrame1ButtonFrame','BOTTOMLEFT',-400,200)
 
 	-- Automatic Queue Accept
-	LFGListApplicationDialog:SetScript("OnShow", LFRAcceptRole)
-	LFDRoleCheckPopup:SetScript("OnShow", LFDAcceptRole)
-	LFGInvitePopup:SetScript("OnShow", LFGAcceptRole)
+	--LFGListApplicationDialog:SetScript("OnShow", LFRAcceptRole)
+	--LFDRoleCheckPopup:SetScript("OnShow", LFDAcceptRole)
+	--LFGInvitePopup:SetScript("OnShow", LFGAcceptRole)
 
 	-- Run the check on all of these events.
 	local Monitor = CreateFrame('Frame', 'RFM_Monitor')
-	Monitor:RegisterEvent('PLAYER_ENTERING_WORLD')
-	Monitor:RegisterEvent('PLAYER_REGEN_DISABLED')
-	Monitor:RegisterEvent('PLAYER_REGEN_ENABLED')
-	Monitor:RegisterEvent('ZONE_CHANGED_NEW_AREA')
-	Monitor:RegisterEvent('GROUP_ROSTER_UPDATE')
-	Monitor:RegisterEvent('ADDON_LOADED')
-	Monitor:SetScript('OnEvent', Hider)
-	RFM.Monitor = Monitor
+	--Monitor:RegisterEvent('PLAYER_ENTERING_WORLD')
+	--Monitor:RegisterEvent('PLAYER_REGEN_DISABLED')
+	--Monitor:RegisterEvent('PLAYER_REGEN_ENABLED')
+	--Monitor:RegisterEvent('ZONE_CHANGED_NEW_AREA')
+	--Monitor:RegisterEvent('GROUP_ROSTER_UPDATE')
+	--Monitor:RegisterEvent('ADDON_LOADED')
+	--Monitor:SetScript('OnEvent', Hider)
+	--RFM.Monitor = Monitor
 
 	MyCvars()
 	--C_Timer.After(5, FontStyler)
-	C_Timer.After(5, TSM_PopupHider)
-	C_Timer.After(5, UpdateDataTexts)
+	--C_Timer.After(5, TSM_PopupHider)
+	--C_Timer.After(5, UpdateDataTexts)
 	--C_Timer.After(3, PlaceChat)
-	C_Timer.After(3, MoveGeneralDockManager)
+	--C_Timer.After(3, MoveGeneralDockManager)
 	--C_Timer.After(3, SkadaStyler)
 end
 
